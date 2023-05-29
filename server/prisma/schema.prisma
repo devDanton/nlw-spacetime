@@ -11,8 +11,24 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(uuid()) //Universal Unique ID -> único universal para cada usuário inserido na tabela.
-  name String
+  id        String @id @default(uuid()) //Universal Unique ID -> único universal para cada usuário inserido na tabela.
+  githubId  Int    @unique
+  name      String
+  login     String
+  avatarUrl String
+
+  memories Memory[]
+}
+
+model Memory {
+  id        String   @id @default(uuid())
+  coverUrl  String
+  content   String
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
 // Executa migração das mudanças realizadas nas tabelas Prisma.
